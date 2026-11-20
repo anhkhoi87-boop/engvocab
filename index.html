@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>EngVocab 3000 - Học Từ Vựng Tiếng Anh</title>
+  
+  <!-- Apple iOS PWA Meta Tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="EngVocab">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="manifest" href="manifest.json">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">📚</div>
+      <div>
+        <div class="brand-title">EngVocab 3000</div>
+        <div class="brand-subtitle">57 Chủ Đề • Phiên Âm Trọng Âm</div>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn" id="open-wallpaper-btn" title="Xuất hình nền màn hình khóa">🖼️</button>
+      <button class="icon-btn" id="theme-btn" title="Đổi giao diện">☀️</button>
+      <button class="icon-btn" id="open-settings-btn" title="Cài đặt">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Today's Topic Selector Bar -->
+  <section class="topic-bar">
+    <button class="topic-selector-btn" id="topic-btn">
+      <div class="topic-info-left">
+        <span class="topic-icon" id="current-topic-icon">🦁</span>
+        <div>
+          <div class="topic-name" id="current-topic-name">Động vật (Animals)</div>
+          <div class="topic-sub">Chủ đề học hôm nay • <span id="current-topic-count">37 từ</span></div>
+        </div>
+      </div>
+      <div class="topic-arrow">Đổi chủ đề ▾</div>
+    </button>
+  </section>
+
+  <!-- Progress Bar -->
+  <section class="progress-container">
+    <span style="font-weight: 600;">Tiến độ học</span>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progress-fill" style="width: 0%;"></div>
+    </div>
+    <span id="card-counter" style="font-weight: 700; color: var(--accent);">0 / 0</span>
+  </section>
+
+  <!-- Main Flashcard Container -->
+  <main class="main-content">
+    <div class="flashcard-wrapper" id="card-wrapper">
+      
+      <!-- Card Front Face -->
+      <div class="card-face card-front">
+        <div class="card-top-meta">
+          <span class="card-topic-tag" id="card-topic">🦁 Động vật</span>
+          <span id="card-star" style="font-size: 20px; cursor: pointer;">☆</span>
+        </div>
+
+        <div class="card-center">
+          <div class="card-word" id="card-word">Elephant</div>
+          <div class="card-ipa" id="card-ipa">/ˈɛləfənt/</div>
+
+          <!-- Stressed Vietnamese Phonetics -->
+          <div class="card-phonetic-box">
+            <div class="phonetic-title">🔔 Phiên âm bồi tiếng Việt:</div>
+            <div class="card-vn-phonetic" id="card-phonetic">
+              <!-- Dynamically highlighted stressed syllables -->
+            </div>
+            <div class="card-stress-guide" id="card-stress-guide">👉 Nhấn mạnh âm [É] đầu tiên</div>
+          </div>
+
+          <!-- Audio Pronunciation Buttons -->
+          <div class="audio-controls">
+            <button class="audio-btn" id="audio-normal-btn">
+              <span>🔊</span> Đọc chuẩn
+            </button>
+            <button class="audio-btn" id="audio-slow-btn">
+              <span>🐢</span> Đọc chậm (0.7x)
+            </button>
+          </div>
+        </div>
+
+        <div class="card-hint">
+          <span>👆</span> Chạm thẻ để lật xem nghĩa tiếng Việt & ví dụ
+        </div>
+      </div>
+
+      <!-- Card Back Face -->
+      <div class="card-face card-back">
+        <div class="card-top-meta">
+          <span class="card-topic-tag">📖 Nghĩa & Ví dụ</span>
+          <span style="font-size: 13px; color: var(--accent);">Mặt sau</span>
+        </div>
+
+        <div class="card-center">
+          <div class="back-meaning" id="back-meaning">Con voi</div>
+          <div class="back-type" id="back-type">Từ loại: (noun)</div>
+
+          <div class="back-example-box">
+            <div style="font-size: 11px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px;">Câu ví dụ thực tế:</div>
+            <div id="back-example">"The elephant is known for its remarkable memory."</div>
+            <button class="audio-btn" id="audio-example-btn" style="margin-top: 10px; padding: 6px 12px; font-size: 12px;">
+              <span>🔊</span> Nghe câu ví dụ
+            </button>
+          </div>
+        </div>
+
+        <div class="card-hint">
+          <span>👆</span> Chạm lần nữa để quay lại mặt trước
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Quick Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn-action btn-again" id="btn-again">
+        <span>🔁</span> Cần ôn lại
+      </button>
+      <button class="btn-action btn-mastered" id="btn-mastered">
+        <span>✅</span> Đã thuộc từ này
+      </button>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-nav="flashcard">
+      <span class="nav-icon">🗂️</span>
+      <span>Học thẻ</span>
+    </button>
+    <button class="nav-item" data-nav="standby" id="open-standby-btn">
+      <span class="nav-icon">🌙</span>
+      <span>Chờ sạc</span>
+    </button>
+    <button class="nav-item" data-nav="quiz" id="open-quiz-btn">
+      <span class="nav-icon">🎯</span>
+      <span>Trắc nghiệm</span>
+    </button>
+    <button class="nav-item" data-nav="dict" id="open-dict-btn">
+      <span class="nav-icon">📖</span>
+      <span>Tra 3000 từ</span>
+    </button>
+    <button class="nav-item" data-nav="settings">
+      <span class="nav-icon">⚙️</span>
+      <span>Cài đặt</span>
+    </button>
+  </nav>
+
+  <!-- Topic Selector Modal (Bottom Sheet) -->
+  <div class="modal-overlay" id="topic-modal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Chọn chủ đề học hôm nay</div>
+        <button class="icon-btn" id="close-topic-modal">✕</button>
+      </div>
+      <input type="text" class="sheet-search" id="topic-search" placeholder="🔍 Tìm nhanh trong 57 chủ đề...">
+      <div class="sheet-list" id="topic-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- StandBy AMOLED FullScreen View (Chế độ chờ học từ khi sạc điện thoại) -->
+  <div class="standby-overlay" id="standby-overlay">
+    <div class="standby-top">
+      <div>
+        <div class="standby-clock" id="standby-clock">12:45:00</div>
+        <div class="standby-date" id="standby-date">Thứ Sáu, ngày 20 tháng 11</div>
+      </div>
+      <button class="icon-btn" id="standby-close-btn" style="background:#222; border-color:#333; color:#fff;">✕</button>
+    </div>
+
+    <div class="standby-center">
+      <div class="card-topic-tag" id="standby-topic-tag" style="background: rgba(255,255,255,0.1); color:#38bdf8; font-size:16px; padding:6px 16px;">🦁 Động vật</div>
+      <div class="standby-word" id="standby-word">Elephant</div>
+      <div class="standby-phonetic" id="standby-phonetic">É-lơ-phừnt</div>
+      <div class="standby-meaning" id="standby-meaning">Con voi</div>
+    </div>
+
+    <div class="standby-bottom">
+      <button class="audio-btn" id="standby-audio-toggle" style="background:#1e293b; color:#38bdf8; padding: 10px 20px;">
+        <span>🔊</span> Tự động phát âm: Bật
+      </button>
+      <button class="btn-action btn-mastered" id="standby-next-btn" style="padding: 10px 20px; font-size: 14px;">
+        Từ tiếp theo ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- Settings & Lock Screen Notifications Modal -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-sheet">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Cài đặt & Màn hình khóa</div>
+        <button class="icon-btn" id="close-settings-modal">✕</button>
+      </div>
+      
+      <div class="sheet-list">
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">🔔 Nhắc từ ngẫu nhiên ra màn hình khóa</div>
+            <div class="setting-desc">Tự động đẩy thông báo từ vựng khi điện thoại ở chế độ chờ</div>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="notif-toggle">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">⏱️ Tần suất thông báo</div>
+            <div class="setting-desc">Khoảng thời gian giữa các lần nhắc từ</div>
+          </div>
+          <select id="notif-interval-select" style="background:var(--bg-primary); color:var(--text-primary); border:1px solid var(--border); border-radius:10px; padding:8px 12px; font-weight:600;">
+            <option value="15">Mỗi 15 phút</option>
+            <option value="30" selected>Mỗi 30 phút</option>
+            <option value="60">Mỗi 1 tiếng</option>
+            <option value="120">Mỗi 2 tiếng</option>
+          </select>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <button class="btn-action btn-mastered" id="test-notif-btn" style="width: 100%;">
+            🔔 Thử nghiệm gửi thông báo ngay bây giờ
+          </button>
+        </div>
+
+        <div style="margin-top: 20px; background: rgba(56, 189, 248, 0.08); border-radius: 16px; padding: 14px; border: 1px dashed var(--accent);">
+          <strong style="color: var(--accent); font-size: 14px;">💡 Hướng dẫn cài app vào iPhone:</strong>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-top: 6px; line-height: 1.5;">
+            1. Mở trang này bằng trình duyệt <strong>Safari trên iPhone</strong>.<br>
+            2. Bấm nút <strong>Chia sẻ (Share icon ở giữa góc dưới Safari)</strong>.<br>
+            3. Chọn <strong>"Thêm vào Màn hình chính" (Add to Home Screen)</strong>.<br>
+            ➔ App sẽ xuất hiện trên màn hình chính iPhone và chạy toàn màn hình offline 100%!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wallpaper Generator Modal -->
+  <div class="modal-overlay" id="wallpaper-modal">
+    <div class="modal-sheet" style="max-height: 92vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Xuất hình nền thẻ từ iPhone</div>
+        <button class="icon-btn" id="close-wallpaper-modal">✕</button>
+      </div>
+
+      <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+        Tạo ảnh nền sắc nét để cài tính năng <strong>Photo Shuffle (Xáo trộn ảnh)</strong> trên iPhone: mỗi lần bật máy là thấy một từ vựng mới!
+      </p>
+
+      <div style="display:flex; justify-content:center; align-items:center; overflow:hidden; border-radius:18px; border: 1px solid var(--border); background:#000;">
+        <canvas id="wallpaper-canvas" style="max-width: 220px; height: auto; border-radius: 12px;"></canvas>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <button class="btn-action btn-mastered" id="download-wallpaper-btn" style="width:100%;">
+          📥 Tải ảnh về iPhone (Độ phân giải cao)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quiz Mode Modal -->
+  <div class="modal-overlay" id="quiz-modal">
+    <div class="modal-sheet" style="max-height: 90vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div>
+          <div class="sheet-title">🎯 Trắc nghiệm ghi nhớ</div>
+          <div id="quiz-score" style="font-size: 13px; color: var(--accent); font-weight: 700;">Điểm: 0</div>
+        </div>
+        <button class="icon-btn" id="close-quiz-modal">✕</button>
+      </div>
+
+      <div style="text-align: center; padding: 20px 0 10px;">
+        <div id="quiz-word" style="font-size: 34px; font-weight: 800; color: #fff;">Elephant</div>
+        <div id="quiz-phonetic" style="font-size: 18px; color: #f59e0b; margin-top: 4px;">É-lơ-phừnt</div>
+        <button class="audio-btn" id="quiz-audio-btn" style="margin: 10px auto; padding: 6px 14px; font-size: 13px;">
+          <span>🔊</span> Nghe phát âm
+        </button>
+      </div>
+
+      <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px; font-weight: 600;">
+        Chọn nghĩa tiếng Việt đúng:
+      </div>
+
+      <div id="quiz-options" style="display:flex; flex-direction:column; gap:8px;">
+        <!-- Options rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Dictionary Search Modal -->
+  <div class="modal-overlay" id="dict-modal">
+    <div class="modal-sheet" style="max-height: 90vh;">
+      <div class="sheet-handle"></div>
+      <div class="sheet-header">
+        <div class="sheet-title">Tra cứu 3000 từ vựng</div>
+        <button class="icon-btn" id="close-dict-modal">✕</button>
+      </div>
+      <input type="text" class="sheet-search" id="dict-search" placeholder="🔍 Gõ từ tiếng Anh hoặc tiếng Việt...">
+      <div class="sheet-list" id="dict-list">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Script Includes -->
+  <script src="topics.js"></script>
+  <script src="words.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

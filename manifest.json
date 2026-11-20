@@ -1,0 +1,22 @@
+{
+  "name": "EngVocab 3000 - Học Từ Vựng",
+  "short_name": "EngVocab",
+  "description": "App học 3000 từ vựng tiếng Anh theo chủ đề với phiên âm bồi trọng âm và phát âm chuẩn bản xứ.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0F172A",
+  "theme_color": "#0F172A",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
